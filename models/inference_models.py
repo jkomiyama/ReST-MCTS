@@ -7,7 +7,9 @@ from transformers import AutoModel, AutoTokenizer, AutoModelForCausalLM
 # get model and tokenizer
 def get_inference_model(model_dir):
     inference_tokenizer = AutoTokenizer.from_pretrained(model_dir, trust_remote_code=True)
-    inference_model = AutoModel.from_pretrained(model_dir, trust_remote_code=True).half().cuda()
+    inference_model = AutoModelForCausalLM.from_pretrained(model_dir, trust_remote_code=True).half()
+    if torch.cuda.is_available():
+        inference_model = inference_model.cuda()
     inference_model.eval()
     return inference_tokenizer, inference_model
 
@@ -16,8 +18,9 @@ def get_inference_model(model_dir):
 def get_inference_model_llama(model_dir):
     inference_model = AutoModelForCausalLM.from_pretrained(model_dir, trust_remote_code=True, torch_dtype=torch.bfloat16)
     inference_tokenizer = AutoTokenizer.from_pretrained(model_dir, trust_remote_code=True)
-    device = "cuda"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     inference_model.to(device)
+    inference_model.eval()
     return inference_tokenizer, inference_model
 
 
@@ -26,8 +29,9 @@ def get_inference_model_mistral(model_dir):
     inference_model = AutoModelForCausalLM.from_pretrained(model_dir, trust_remote_code=True, torch_dtype=torch.bfloat16)
     inference_tokenizer = AutoTokenizer.from_pretrained(model_dir, trust_remote_code=True)
     # inference_tokenizer.pad_token = inference_tokenizer.eos_token
-    device = "cuda"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
     inference_model.to(device)
+    inference_model.eval()
     return inference_tokenizer, inference_model
 
 
