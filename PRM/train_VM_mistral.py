@@ -1,6 +1,6 @@
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+#os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 import json
 import numpy as np
 import torch
@@ -177,4 +177,3 @@ for i in range(len(test_preds)):
         cnt += 1
 test_acc = cnt / len(test_preds)
 print(f"Test accuracy: {test_acc:.4f}")
-```
