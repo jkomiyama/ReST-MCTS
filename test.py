@@ -10,4 +10,5 @@ from MCTS.task import *
 question = "Calculate the sum of the first 10 prime numbers."
 task = MCTS_Task(question, 'llama', 'local', lang='en', iteration_limit=100)
 output = task.run()
-print(output['solution'])
+print("output: ", output)
+#print(output['solution'])

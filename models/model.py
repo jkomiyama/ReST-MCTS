@@ -24,14 +24,14 @@ BASE_MODEL_GLM = 'GLM4'
 INFERENCE_MODEL_DIR = "/workspace/ckpt/Meta-Llama-3-8B-Instruct"
 # INFERENCE_MODEL_DIR = None
 LOCAL_INFERENCE_TYPES = ['glm', 'llama', 'mistral']
-LOCAL_INFERENCE_IDX = 0
+LOCAL_INFERENCE_IDX = 1
 
 VALUE_BASE_MODEL_DIR = "/workspace/ckpt/MetaMath-Mistral-7B"
 # VALUE_BASE_MODEL_DIR = None
 VALUE_MODEL_STATE_DICT = "/workspace/ReST-MCTS/PRM/records/Mistral/VM_best_checkpoint.pt"
 # VALUE_MODEL_STATE_DICT = None
 LOCAL_VALUE_TYPES = ['glm', 'mistral']
-LOCAL_VALUE_IDX = 0
+LOCAL_VALUE_IDX = 1
 USE_PRM = False
 
 INFERENCE_LOCAL = False
