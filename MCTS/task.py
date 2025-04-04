@@ -171,7 +171,7 @@ class MCTS_Task(SearchTask):
                 print(f'标准化后新的步骤:{revised_}\n')
                 return revised_ + '\n'
 
-    def get_next_step_use_reflection(self, y, step_n, reflection):  # 暂不支持 case-prompt
+    def get_next_step_use_reflection(self, y, step_n, reflection):  # Case-prompt not supported yet
         if self.propose_method == 'gpt' or self.propose_method == 'local':
             propose_prompt = self.zero_single_propose_wrap_use_reflection_gpt(self.question, y, step_n, reflection,
                                                                               self.lang)

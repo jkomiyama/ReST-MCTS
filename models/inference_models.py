@@ -42,7 +42,7 @@ def get_local_response(query, model, tokenizer, max_length=2048, truncation=True
             output = output_.tolist()[0][len(inputs["input_ids"][0]):]
             response = tokenizer.decode(output)
 
-            print(f'obtain response:{response}\n')
+            print(f'Received response:{response}\n')
             all_response = response
             break
         except Exception as e:
@@ -77,7 +77,7 @@ def get_local_response_llama(query, model, tokenizer, max_length=2048, truncatio
             processed_string = ori_string.split('<|end_header_id|>')[2].strip().split('<|eot_id|>')[0].strip()
             response = processed_string.split('<|end_of_text|>')[0].strip()
 
-            # print(f'获得回复:{response}\n')
+            # print(f'Received response:{response}\n')
             all_response = response
             break
         except Exception as e:
@@ -107,7 +107,7 @@ def get_local_response_mistral(query, model, tokenizer, max_length=1024, truncat
             processed_string = ori_string.split('[/INST]')[1].strip()
             response = processed_string.split('</s>')[0].strip()
 
-            print(f'obtain response:{response}\n')
+            print(f'Received response:{response}\n')
             all_response = response
             break
         except Exception as e:

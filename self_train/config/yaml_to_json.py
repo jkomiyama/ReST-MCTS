@@ -2,11 +2,11 @@ import yaml
 import json
 
 
-# yaml文件内容转换成json格式
+# Convert yaml file content to json format
 def yaml_to_json(yamlPath):
     with open(yamlPath, encoding="utf-8") as f:
-        datas = yaml.load(f, Loader=yaml.FullLoader)  # 将文件的内容转换为字典形式
-    jsonDatas = json.dumps(datas, indent=5)  # 将字典的内容转换为json格式的字符串
+        datas = yaml.load(f, Loader=yaml.FullLoader)  # Convert file content to dictionary format
+    jsonDatas = json.dumps(datas, indent=5)  # Convert dictionary content to json format string
     return jsonDatas
 
 

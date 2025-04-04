@@ -105,7 +105,7 @@ def chatgpt(messages, model=BASE_MODEL_GPT, temperature=0.7, max_tokens=1000, n=
         n -= cnt
         res = completions_with_backoff(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens,
                                        n=cnt, stop=stop)
-        # print(f'得到GPT回复:{res}\n\n')
+        # print(f'Received GPT response:{res}\n\n')
         outputs.extend([choice["message"]["content"] for choice in res["choices"]])
         # log completion tokens
         completion_tokens += res["usage"]["completion_tokens"]

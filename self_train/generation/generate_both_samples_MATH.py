@@ -91,15 +91,15 @@ def parse_args():
     base_args.add_argument('--roll_policy', type=str, choices=['random', 'greedy'], default='greedy')
     base_args.add_argument('--exploration_constant', type=float, default=0.5)
     base_args.add_argument('--roll_forward_steps', type=int, default=1)
-    base_args.add_argument('--end_gate', type=float, default=0.8)  # 结束阈值
+    base_args.add_argument('--end_gate', type=float, default=0.8)  # End threshold
     base_args.add_argument('--branch', type=int, default=3)
     base_args.add_argument('--roll_branch', type=int, default=1)
     base_args.add_argument('--inf', type=float, default=0.9)
-    base_args.add_argument('--evaluate', type=str, default='')  # 是否进行评测(空即不评测)
+    base_args.add_argument('--evaluate', type=str, default='')  # Whether to evaluate (empty means no evaluation)
     base_args.add_argument('--alpha', type=float, default=0.5)
-    base_args.add_argument('--visualize', type=bool, default=False)  # 可视化
-    base_args.add_argument('--use_case_prompt', type=bool, default=False)  # 使用样例提示
-    base_args.add_argument('--use_reflection', type=str, choices=['simple', 'common'], default='simple')  # 使用反思模式
+    base_args.add_argument('--visualize', type=bool, default=False)  # Visualization
+    base_args.add_argument('--use_case_prompt', type=bool, default=False)  # Use example prompts
+    base_args.add_argument('--use_reflection', type=str, choices=['simple', 'common'], default='simple')  # Use reflection mode
     base_args.add_argument('--low', type=float, default=0)
     base_args.add_argument('--high', type=float, default=1)
     base_args.add_argument('--algorithm', type=str, choices=['dfs', 'bfs'], default='dfs')
@@ -109,7 +109,7 @@ def parse_args():
     base_args.add_argument('--generate_num', type=int, default=1)
     base_args.add_argument('--start_num', type=int, default=0)
     base_args.add_argument('--end_num', type=int, default=625)
-    base_args.add_argument('--partial', type=bool, default=False)  # 是否继续生成
+    base_args.add_argument('--partial', type=bool, default=False)  # Whether to continue generation
     base_args.add_argument('--lang', type=str, choices=['zh', 'en'], default='en')
     base_args.add_argument('--do_self_critic', type=bool, default=True)  # for CoT
 
