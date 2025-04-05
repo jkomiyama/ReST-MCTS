@@ -8,7 +8,7 @@ from utils.solution_summary_extractor import extract_summary_from_solution
 class CoT_Task(SearchTask):
     def __init__(self, data, propose_method='glm', value_method='glm', temperature=0.7, max_tokens=2048, seed=170,
                  max_length=2048, truncation=True,
-                 do_sample=True, max_new_tokens=1024, evaluate='', summary=False, lang='zh', answer=None,
+                 do_sample=True, max_new_tokens=1024, evaluate='', summary=False, lang='en', answer=None,
                  verify_method='string', do_self_critic=False):
         super().__init__(data, propose_method, value_method)
         self.mode = 'cot'
