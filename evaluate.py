@@ -36,7 +36,7 @@ def run(arguments):
         print(f'Begin to solve the problem {i+1}...\n')
         data = data_list[i]['content']
         print("datalist answer", data_list[i]['answer'])
-        answer = data_list[i]['answer']
+        answer = str(data_list[i]['answer']) # some code assume answer is string.
         if arguments.mode == 'cot':
             Task = CoT_Task(data, arguments.propose_method, arguments.value_method, arguments.temperature, evaluate=arguments.evaluate)
             if arguments.consistency:
@@ -69,6 +69,9 @@ def run(arguments):
 
         # evaluate metrics
         if arguments.evaluate:
+            if 'summary' not in output:
+                output['summary'] = None # summary is often missing
+                print("output['summary'] is missing")
             result = verify_float(answer, output['summary'])
             output.update({'answer': answer, 'accurate': result})
             if result:
