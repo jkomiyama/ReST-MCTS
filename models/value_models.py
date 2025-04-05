@@ -44,10 +44,11 @@ class ChatGLM_PRM(nn.Module):
 
 
 class Mistral_PRM(nn.Module):
-    def __init__(self, base):
+    def __init__(self, base, vocab_size = None):
         super(Mistral_PRM, self).__init__()
         self.base_model = base
-        vocab_size = self.base_model.config.vocab_size
+        if vocab_size == None:
+            vocab_size = self.base_model.config.vocab_size
         self.LN = nn.Linear(vocab_size, 1)
 
     def forward(self, input_ids, attention_mask):

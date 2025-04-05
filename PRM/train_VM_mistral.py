@@ -10,6 +10,11 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, AdamW
 from sklearn.metrics import accuracy_score
 from torch.utils.data import DataLoader, Dataset
 import pandas as pd
+
+# load PRM
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+import sys
+sys.path.append(parent_dir)
 from models.value_models import Mistral_PRM
 
 max_length = 900
