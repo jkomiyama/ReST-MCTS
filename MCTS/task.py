@@ -96,23 +96,23 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '下一步:' in p:
-                stp = p.split('下一步:')[1].strip()
+            if 'Next step:' in p:
+                stp = p.split('Next step:')[1].strip()
                 if len(stp) < 2:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + ':' + stp
+                    revised_ = 'Step ' + str(step_n) + ':' + stp
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
-            elif '步骤' in p and ':' in p:
+            elif 'Step' in p and ':' in p:
                 pre_len = len(p.split(':')[0])
                 p_ = p[pre_len:]
-                p_ = p_.split('步骤')[0].strip()
+                p_ = p_.split('Step')[0].strip()
                 if len(p_) < 3:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + p_
+                    revised_ = 'Step ' + str(step_n) + p_
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
@@ -179,23 +179,23 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '下一步:' in p:
-                stp = p.split('下一步:')[1].strip()
+            if 'Next step:' in p:
+                stp = p.split('Next step:')[1].strip()
                 if len(stp) < 2:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + ':' + stp
+                    revised_ = 'Step ' + str(step_n) + ':' + stp
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
-            elif '步骤' in p and ':' in p:
+            elif 'Step' in p and ':' in p:
                 pre_len = len(p.split(':')[0])
                 p_ = p[pre_len:]
-                p_ = p_.split('步骤')[0].strip()
+                p_ = p_.split('Step')[0].strip()
                 if len(p_) < 3:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + p_
+                    revised_ = 'Step ' + str(step_n) + p_
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
@@ -263,7 +263,7 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '已解决' in p or '已经解决' in p:
+            if 'solved' in p or 'already solved' in p:
                 if step_n > 1:
                     print('This step problem has been solved, stop exploring.\n')
                     print('Standardized opinion: <end>\n')
@@ -315,7 +315,7 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '已解决' in p or '已经解决' in p:
+            if 'solved' in p or 'already solved' in p:
                 if step_n > 1:
                     print('This step problem has been solved, stop exploring.\n')
                     return '<end>'

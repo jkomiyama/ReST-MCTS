@@ -2,8 +2,8 @@ from models.get_response import *
 
 
 def llm_verify(ans, real_ans, judge_model='gpt-4-1106-preview'):
-    prompt = '下面将输入两段文字，第一段文字为某道理科题目的一个解答或答案（不一定正确），第二段是这道题目的标准答案。请判断第一段解答得到的答案与标准答案在数学意义上是否一致，并根据判断直接输出‘0’或’1‘，不需要输出任何别的信息。如果答案一致，请输出‘1’；否则，只要答案不匹配，或者第一个文段中没有明确指出答案也没有输出latex表达式，请输出‘0’；如果第一段解答与标准答案之间关系模糊，请输出‘0’。\n'
-    qry = prompt + '文段1:' + ans + '\n' + '文段2:' + real_ans + '\n输出:'
+    prompt = 'I will input two texts. The first text is a solution or answer to a science question (which may not be correct), and the second text is the standard answer to this question. Please determine if the answer from the first solution is mathematically equivalent to the standard answer, and output only "0" or "1" based on your judgment, without any additional information. Output "1" if the answers are consistent; otherwise, output "0" if the answers do not match, or if the first text does not clearly indicate an answer or does not include a LaTeX expression. If the relationship between the first solution and the standard answer is ambiguous, output "0".\n'
+    qry = prompt + 'Text 1:' + ans + '\n' + 'Text 2:' + real_ans + '\nOutput:'
     lbl = ''
     cnt = 5
     while lbl == '' and cnt:
