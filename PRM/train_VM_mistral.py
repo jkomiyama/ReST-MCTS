@@ -1,6 +1,6 @@
 import os
 
-#os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import json
 import numpy as np
 import torch
@@ -10,6 +10,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, AdamW
 from sklearn.metrics import accuracy_score
 from torch.utils.data import DataLoader, Dataset
 import pandas as pd
+from models.value_models import Mistral_PRM
 
 max_length = 900
 
@@ -44,19 +45,6 @@ class MyDataset(Dataset):
             'label': label
         }
 
-
-class Mistral_VM(nn.Module):
-    def __init__(self, base, vocab_size=32000):
-        super(Mistral_VM, self).__init__()
-        self.base_model = base
-        self.LN = nn.Linear(vocab_size, 1)
-
-    def forward(self, input_ids, attention_mask):
-        outputs = self.base_model(input_ids=input_ids, attention_mask=attention_mask).logits[:, -1, :]
-        value_outputs = self.LN(outputs)
-        return value_outputs.squeeze(dim=1)
-
-
 # Load training set, validation set, and test set data
 train_js = 'data/train_en.json'
 test_js = 'data/test_en.json'
@@ -90,8 +78,8 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(device, '\n')
 vocab_size = base_model.config.vocab_size
-print(vocab_size)
-VM = Mistral_VM(base_model, vocab_size)
+print("vocab_size: ", vocab_size)
+VM = Mistral_PRM(base_model, vocab_size)
 VM.to(device)
 
 # Define loss function and optimizer
