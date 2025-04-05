@@ -9,6 +9,13 @@ from utils.json_operator import *
 from utils.verify_answer import *
 from utils.self_consistency import get_consistency_output_scibench
 
+import torch
+if torch.cuda.is_available():
+    print("GPU is available")
+    print(f"GPU count: {torch.cuda.device_count()}")
+    print(f"GPU now: {torch.cuda.get_device_name(0)}")
+else:
+    print("GPU is not available")
 
 def run(arguments):
     print('-'*30, 'Begin testing', '-'*30, '\n')
