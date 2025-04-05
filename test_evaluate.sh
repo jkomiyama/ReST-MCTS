@@ -7,4 +7,4 @@ python evaluate.py \
   --evaluate "scibench" \
   --iteration_limit 50 \
   --use_reflection "simple" \
-  --branch 3
+  --branch 3 | tee test_evaluate.log
