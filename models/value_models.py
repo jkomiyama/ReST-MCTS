@@ -47,13 +47,13 @@ class Mistral_PRM(nn.Module):
     def __init__(self, base):
         super(Mistral_PRM, self).__init__()
         self.base_model = base
+        vocab_size = self.base_model.config.vocab_size
+        self.LN = nn.Linear(vocab_size, 1)
 
     def forward(self, input_ids, attention_mask):
-        outputs = self.base_model(input_ids=input_ids, attention_mask=attention_mask).logits
-        probs = torch.softmax(outputs, dim=-1)
-        output = probs[:, -1, 7081]  # n*1 tensor, 7081 is the index of token 'True'
-        return output
-
+        outputs = self.base_model(input_ids=input_ids, attention_mask=attention_mask).logits[:, -1, :]
+        value_outputs = self.LN(outputs)
+        return value_outputs.squeeze(dim=1)
 
 # get value model
 def get_value_model(base_model_dir, state_dict_file):

@@ -32,7 +32,7 @@ VALUE_MODEL_STATE_DICT = "/workspace/ReST-MCTS/PRM/records/Mistral/VM_best_check
 # VALUE_MODEL_STATE_DICT = None
 LOCAL_VALUE_TYPES = ['glm', 'mistral']
 LOCAL_VALUE_IDX = 1
-USE_PRM = False
+USE_PRM = True
 
 INFERENCE_LOCAL = False
 VALUE_LOCAL = False
@@ -56,6 +56,7 @@ if VALUE_BASE_MODEL_DIR is not None:
         if value_type == 'glm':
             value_tokenizer, value_model = get_value_model_prm(VALUE_BASE_MODEL_DIR, VALUE_MODEL_STATE_DICT)
         else:
+            print("Using Mistral PRM")
             value_tokenizer, value_model = get_value_model_prm_mistral(VALUE_BASE_MODEL_DIR, VALUE_MODEL_STATE_DICT)
     else:
         if value_type == 'glm':
