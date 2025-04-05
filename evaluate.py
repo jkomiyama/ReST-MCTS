@@ -35,6 +35,7 @@ def run(arguments):
         # solve
         print(f'Begin to solve the problem {i+1}...\n')
         data = data_list[i]['content']
+        print("datalist answer", data_list[i]['answer'])
         answer = data_list[i]['answer']
         if arguments.mode == 'cot':
             Task = CoT_Task(data, arguments.propose_method, arguments.value_method, arguments.temperature, evaluate=arguments.evaluate)
@@ -60,7 +61,8 @@ def run(arguments):
                              arguments.roll_policy, arguments.roll_branch, arguments.roll_forward_steps, arguments.time_limit,
                              arguments.iteration_limit, arguments.exploration_constant, arguments.alpha, arguments.inf,
                              arguments.temperature, use_case_prompt=arguments.use_case_prompt, use_reflection=arguments.use_reflection,
-                             low=arguments.low, high=arguments.high, evaluate=arguments.evaluate)
+                             low=arguments.low, high=arguments.high, evaluate=arguments.evaluate,
+                             answer = answer)
             output, root = Task.run()
             if arguments.visualize:
                 visualize(root, Task, arguments.task_name, arguments.file, i + 1)
