@@ -68,11 +68,9 @@ def run(arguments):
                 visualize(root, Task, arguments.task_name, arguments.file, i + 1)
 
         # evaluate metrics
+        summary = output['policy_samples'][-1]['summary'] # it seems that policy_samples is the tree path and I try to show the last step
         if arguments.evaluate:
-            if 'summary' not in output:
-                output['summary'] = None # summary is often missing
-                print("output['summary'] is missing")
-            result = verify_float(answer, output['summary'])
+            result = verify_float(answer, summary)
             output.update({'answer': answer, 'accurate': result})
             if result:
                 print(f'The answer of problem {i+1} is correct.\n')
