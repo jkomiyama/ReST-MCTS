@@ -9,7 +9,7 @@ else:
 from MCTS.task import *
 question = "Calculate the sum of the first 10 prime numbers."
 answer = "129"  # 129 is the correct answer
-task = MCTS_Task(question, 'llama', 'local', lang='en', iteration_limit=100, answer=answer)
+task = MCTS_Task(question, 'llama', 'local', lang='en', iteration_limit=100, answer=answer, verify_method='llm')
 output = task.run()
-print("output: ", output)
+#print("output: ", output)
 #print(output['solution'])
