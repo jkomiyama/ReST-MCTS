@@ -577,7 +577,7 @@ class MCTS_Task(SearchTask):
                         summ = extract_summary_from_solution(solution)
                         node.summary = summ
 
-                    result = exact_match_score(summ, self.answer)
+                    result = llm_verify(summ, self.answer)
                     final_answer = {'content': self.question, 'solution': solution, 'summary': summ, 'finish': finish,
                                     'accurate': result, 'real_answer': self.answer}
                 return final_answer, root
@@ -609,13 +609,14 @@ class MCTS_Task(SearchTask):
                     if not summ:
                         result = False
                     else:
-                        result = exact_match_score(summ, self.answer)
+                        result = llm_verify(summ, self.answer)
                     final_answer = {'content': self.question, 'solution': solution, 'summary': summ, 'finish': finish,
                                     'accurate': result, 'real_answer': self.answer}
                     return final_answer, root
 
         # prm (only sample generation available now)
         else:
+           
             assert self.sample_value, 'Only sampling is supported for prm!\n'
             assert self.answer is not None, 'Answer is None!\n'
             flag, end_leaf_nodes = self.verify_end_nodes(root)
@@ -629,11 +630,15 @@ class MCTS_Task(SearchTask):
                 new_policy_sample = {'solution': solution, 'summary': summ, 'correct': correct}
                 new_policy_samples.append(new_policy_sample)
 
+            if summ:
+                result = llm_verify(summ, self.answer)
+            else:
+                result = False
             # extract value data
             if flag:
                 new_value_samples = root.get_full_value_samples_prm(end_leaf_nodes)
             else:
                 new_value_samples = []
             final_answer = {'content': self.question, 'policy_samples': new_policy_samples,
-                            'value_samples': new_value_samples, 'real_answer': self.answer}
+                            'value_samples': new_value_samples, 'accurate': result, 'real_answer': self.answer}
             return final_answer, root
