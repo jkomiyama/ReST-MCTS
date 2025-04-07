@@ -5,6 +5,7 @@ python evaluate.py \
   --value_method "local" \
   --mode "mcts" \
   --evaluate "math" \
+  --verify_method "llm" \
   --iteration_limit 50 \
   --use_reflection "simple" \
   --branch 3 | tee test_evaluate_math500.log

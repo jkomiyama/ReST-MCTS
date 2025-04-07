@@ -62,15 +62,23 @@ def run(arguments):
                              arguments.iteration_limit, arguments.exploration_constant, arguments.alpha, arguments.inf,
                              arguments.temperature, use_case_prompt=arguments.use_case_prompt, use_reflection=arguments.use_reflection,
                              low=arguments.low, high=arguments.high, evaluate=arguments.evaluate,
-                             answer = answer)
+                             answer=answer, verify_method=arguments.verify_method)
             output, root = Task.run()
             if arguments.visualize:
                 visualize(root, Task, arguments.task_name, arguments.file, i + 1)
 
         # evaluate metrics
-        summary = output['policy_samples'][-1]['summary'] # it seems that policy_samples is the tree path and I try to show the last step
+        if len(output['policy_samples']) > 0:
+            summary = output['policy_samples'][-1]['summary'] # it seems that policy_samples is the tree path and I try to show the last step
+        else:
+            summary = ""
         if arguments.evaluate:
-            result = verify_float(answer, summary)
+            if arguments.verify_method == 'string':
+                result = verify_float(answer, summary)
+            else:  # llm
+                from utils.verify_llm import llm_verify
+                result = llm_verify(summary, answer)
+                
             output.update({'answer': answer, 'accurate': result})
             if result:
                 print(f'The answer of problem {i+1} is correct.\n')
@@ -124,6 +132,7 @@ def parse_args():
     base_args.add_argument('--max_depth', type=int, default=8)
     base_args.add_argument('--select_method', type=str, choices=['greedy', 'sample'], default='greedy')
     base_args.add_argument('--consistency', type=bool, default=True)
+    base_args.add_argument('--verify_method', type=str, choices=['string', 'llm'], default='string')  # Method for answer verification
 
     arguments = base_args.parse_args()
     return arguments
