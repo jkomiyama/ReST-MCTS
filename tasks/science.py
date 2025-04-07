@@ -154,7 +154,7 @@ class SearchTask(object):
         print('propose_prompt: \n', x + '\nExisting Steps:\n' + y + 'Possible solution step based on the steps above:\n')
         if not y:
             y = 'None\n'
-        prompt = single_reflection_prompt_llama + x + '\nExisting Steps:\n' + y + '\n空\n请你给出意见，不要解答问题，你给出的意见应该完全基于给定的步骤。'  # llama style
+        prompt = single_reflection_prompt_llama + x + '\nExisting Steps:\n' + y + '\nBlank\nPlease give your opinion, do not solve the problem, your opinion should be completely based on the given steps.'  # llama style
         return prompt
 
     @staticmethod
