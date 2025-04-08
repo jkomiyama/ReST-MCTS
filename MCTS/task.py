@@ -13,7 +13,7 @@ class MCTS_Task(SearchTask):
                  roll_branch=1, roll_forward_steps=3, time_limit=None, iteration_limit=None, exploration_constant=0.7,
                  alpha=0.5, inf=1.0, temperature=0.7, max_tokens=2048, seed=170, max_length=2048, truncation=True,
                  do_sample=True, max_new_tokens=256, use_case_prompt=False, use_reflection='simple', low=0, high=1,
-                 evaluate='', sample_value='simple', answer=None, verify_method='string', lang='zh', weighted_verify=False):
+                 evaluate='', sample_value='simple', answer=None, verify_method='string', lang='en', weighted_verify=False):
         super().__init__(data, propose_method, value_method)
         assert 0 <= low < high, "Inappropriate value range!"
         self.mode = 'mcts'
@@ -96,23 +96,23 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '下一步:' in p:
-                stp = p.split('下一步:')[1].strip()
+            if 'Next step:' in p:
+                stp = p.split('Next step:')[1].strip()
                 if len(stp) < 2:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + ':' + stp
+                    revised_ = 'Step ' + str(step_n) + ':' + stp
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
-            elif '步骤' in p and ':' in p:
+            elif 'Step' in p and ':' in p:
                 pre_len = len(p.split(':')[0])
                 p_ = p[pre_len:]
-                p_ = p_.split('步骤')[0].strip()
+                p_ = p_.split('Step')[0].strip()
                 if len(p_) < 3:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + p_
+                    revised_ = 'Step ' + str(step_n) + p_
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
@@ -179,23 +179,23 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '下一步:' in p:
-                stp = p.split('下一步:')[1].strip()
+            if 'Next step:' in p:
+                stp = p.split('Next step:')[1].strip()
                 if len(stp) < 2:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + ':' + stp
+                    revised_ = 'Step ' + str(step_n) + ':' + stp
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
-            elif '步骤' in p and ':' in p:
+            elif 'Step' in p and ':' in p:
                 pre_len = len(p.split(':')[0])
                 p_ = p[pre_len:]
-                p_ = p_.split('步骤')[0].strip()
+                p_ = p_.split('Step')[0].strip()
                 if len(p_) < 3:
                     print('Output step is too short!\n')
                     print('Output step is repeated!\n')
-                    revised_ = '步骤' + str(step_n) + p_
+                    revised_ = 'Step ' + str(step_n) + p_
                     print(f'New step after standardization:{revised_}\n')
                     return revised_ + '\n'
 
@@ -263,7 +263,7 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '已解决' in p or '已经解决' in p:
+            if 'solved' in p or 'already solved' in p:
                 if step_n > 1:
                     print('This step problem has been solved, stop exploring.\n')
                     print('Standardized opinion: <end>\n')
@@ -315,7 +315,7 @@ class MCTS_Task(SearchTask):
         p = p.strip()
 
         if self.lang == 'zh':
-            if '已解决' in p or '已经解决' in p:
+            if 'solved' in p or 'already solved' in p:
                 if step_n > 1:
                     print('This step problem has been solved, stop exploring.\n')
                     return '<end>'
@@ -577,7 +577,7 @@ class MCTS_Task(SearchTask):
                         summ = extract_summary_from_solution(solution)
                         node.summary = summ
 
-                    result = exact_match_score(summ, self.answer)
+                    result = llm_verify(summ, self.answer)
                     final_answer = {'content': self.question, 'solution': solution, 'summary': summ, 'finish': finish,
                                     'accurate': result, 'real_answer': self.answer}
                 return final_answer, root
@@ -609,13 +609,14 @@ class MCTS_Task(SearchTask):
                     if not summ:
                         result = False
                     else:
-                        result = exact_match_score(summ, self.answer)
+                        result = llm_verify(summ, self.answer)
                     final_answer = {'content': self.question, 'solution': solution, 'summary': summ, 'finish': finish,
                                     'accurate': result, 'real_answer': self.answer}
                     return final_answer, root
 
         # prm (only sample generation available now)
         else:
+           
             assert self.sample_value, 'Only sampling is supported for prm!\n'
             assert self.answer is not None, 'Answer is None!\n'
             flag, end_leaf_nodes = self.verify_end_nodes(root)
@@ -629,11 +630,15 @@ class MCTS_Task(SearchTask):
                 new_policy_sample = {'solution': solution, 'summary': summ, 'correct': correct}
                 new_policy_samples.append(new_policy_sample)
 
+            if summ:
+                result = llm_verify(summ, self.answer)
+            else:
+                result = False
             # extract value data
             if flag:
                 new_value_samples = root.get_full_value_samples_prm(end_leaf_nodes)
             else:
                 new_value_samples = []
             final_answer = {'content': self.question, 'policy_samples': new_policy_samples,
-                            'value_samples': new_value_samples, 'real_answer': self.answer}
+                            'value_samples': new_value_samples, 'accurate': result, 'real_answer': self.answer}
             return final_answer, root

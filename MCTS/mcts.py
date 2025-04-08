@@ -110,17 +110,17 @@ def MCTS_search(mcts_task):
         timeLimit = time.time() + mcts_task.time_limit / 1000
         time_start = time.time()
         while time.time() < timeLimit:
-            print(f'<开始新搜索轮次，目前总时间:{time.time() - time_start}>\n')
+            print(f'<Starting a new search round, total time so far:{time.time() - time_start}>\n')
             flag, node, root = executeRound(root, mcts_task)
             if flag:
-                print('已找到解决方案！\n')
+                print('Solution found!\n')
                 return root, node, time.time() - time_start
     else:
         for i in range(mcts_task.iteration_limit):
-            print(f'<开始新搜索轮次，目前已完成轮次数:{i}>\n')
+            print(f'<Starting a new search round, completed rounds:{i}>\n')
             flag, node, root = executeRound(root, mcts_task)
             if flag:
-                print('已找到解决方案！\n')
+                print('Solution found!\n')
                 return root, node, i + 1
     return root, None, None
 
@@ -129,7 +129,7 @@ def executeRound(root, mcts_task):
     # execute a selection-expansion-simulation-backpropagation round
 
     print('-' * 40)
-    print('选择节点阶段\n')
+    print('Node Selection Phase\n')
     flag, node = selectNode(root, mcts_task)
     if flag:
         if mcts_task.sample_value != 'full':
@@ -138,17 +138,17 @@ def executeRound(root, mcts_task):
             node.reflection = '<end>'
 
     print('-' * 40)
-    print('扩充阶段\n')
+    print('Expansion Phase\n')
     if node.reflection == '<end>':
-        print('跳过此阶段。\n')
+        print('Skipping this phase.\n')
     else:
         node = expand(node, mcts_task)
 
     if mcts_task.reward_model_type == 'vm':
         print('-' * 40)
-        print('模拟搜索阶段\n')
+        print('Simulation Phase\n')
         if node.reflection == '<end>':
-            print('跳过此阶段。\n')
+            print('Skipping this phase.\n')
         else:
             roll_node = getBestChild(node, mcts_task)
             best_V = greedyPolicy(roll_node, mcts_task) if mcts_task.roll_policy == 'greedy' else randomPolicy(roll_node,
@@ -157,7 +157,7 @@ def executeRound(root, mcts_task):
             roll_node.numVisits += 1
 
     print('-' * 40)
-    print('反向传播阶段\n')
+    print('Backpropagation Phase\n')
     back_propagate(node)
     return False, node, root
 
@@ -239,18 +239,18 @@ def MCTS(mcts_task):
     root, node, finish = MCTS_search(mcts_task)
 
     if mcts_task.sample_value == 'full':
-        print('采样完成。\n')
+        print('Sampling completed.\n')
         return None, -1, root
     else:
         if mcts_task.reward_model_type == 'vm':
             if finish is not None:
-                print(f'已找到最终解!\nSolution:{node.y}\n')
+                print(f'Final solution found!\nSolution:{node.y}\n')
                 return node, finish, root
 
             else:
                 best_node, best_V = root.getBestV()
-                print(f'在规定时间/轮次内未找到满足要求价值的解答，采用最高价值价值解答代替。\nSolution:{best_node.y}\n')
+                print(f'No solution with required value found within the time/iteration limit, using the highest value solution instead.\nSolution:{best_node.y}\n')
                 return best_node, -1, root
         else:
-            print('尚未支持解答选择，采样结束。\n')
+            print('Solution selection not yet supported, sampling ended.\n')
             return None, -1, root

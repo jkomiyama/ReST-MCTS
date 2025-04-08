@@ -8,8 +8,8 @@ def verify_float(answer: float, output: str):
         print(f'The output is empty and cannot match the answer!\n')
         return False
 
-    if '综上所述，' in output:
-        spl_ans = output.split('综上所述，')[-1]
+    if 'In conclusion, ' in output:
+        spl_ans = output.split('In conclusion, ')[-1]
         spl_ans = spl_ans.strip()
     else:
         spl_ans = output.strip()
@@ -54,11 +54,11 @@ def verify_choice(answer: str, output: str):
 
     check_list = ['A', 'B', 'C', 'D', 'E']
 
-    if '综上所述，最终答案是:' in output:
-        spl_ans = output.split('综上所述，最终答案是:')[-1]
+    if 'In conclusion, the final answer is:' in output:
+        spl_ans = output.split('In conclusion, the final answer is:')[-1]
         spl_ans = spl_ans.strip()
-    elif '综上所述，' in output:
-        spl_ans = output.split('综上所述，')[-1]
+    elif 'In conclusion, ' in output:
+        spl_ans = output.split('In conclusion, ')[-1]
         spl_ans = spl_ans.strip()
     else:
         spl_ans = output.strip()

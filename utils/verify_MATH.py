@@ -392,7 +392,7 @@ def grade_answer(given_answer: str, ground_truth: str) -> bool:
     if given_answer is None:
         return False
 
-    ground_truth_normalized_mathd = normalize_answer(ground_truth)
+    ground_truth_normalized_mathd = normalize_answer(str(ground_truth)) # Junpei found some problems with the type of ground_truth are float (non-string), which cause the error in normalize_answer
     given_answer_normalized_mathd = normalize_answer(given_answer)
 
     # be at least as lenient as mathd
