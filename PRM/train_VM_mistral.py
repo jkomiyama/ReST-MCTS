@@ -144,7 +144,7 @@ for epoch in range(num_epochs):
 print("Training complete!")
 
 # Load the best model for inference
-best_model = Mistral_VM(base_model, vocab_size)
+best_model = Mistral_PRM(base_model, vocab_size)
 best_model.load_state_dict(torch.load("records/Mistral/VM_best_checkpoint.pt"))
 best_model.to(device)
 best_model.eval()
